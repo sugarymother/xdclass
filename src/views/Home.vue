@@ -6,9 +6,7 @@
       </div>
     </cube-popup>
 
-    <div id="header">
-      <img id="lh_ico" src="../assets/lh.png" alt="icon_wh">
-    </div>
+    <TopBanner :custom_txt="'DEBUG专用 勿作他用'"></TopBanner>
     <div id="choose_bar">
         <button id="for_name_btn" @click="choseSearchMode(1)">按姓名</button>
         <button id="for_stunum_btn" @click="choseSearchMode(2)">按学号</button>
@@ -25,13 +23,20 @@
     <table id="stunum-list-tb">
       <ul class="stunum-list-bar" @click="onStuNumClick(stuNum)" v-for="(stuNum, index) in stuNumList" :key="index">{{stuNum}}</ul>
     </table>
+    <BottomBar :leftTo="'LogInfo'" :rightTo="'ChartInfo'"></BottomBar>
   </div>
 </template>
 
 <script>
 import {getStuNumListApi, getUserDetailApi} from '../api/lh.js';
+import TopBanner from './component/TopBanner.vue';
+import BottomBar from './component/BottomBar.vue';
 
 export default {
+  components: {
+    "TopBanner": TopBanner,
+    "BottomBar": BottomBar
+  },
   data() {
     return {
       keyword: "",
@@ -161,21 +166,9 @@ export default {
   height: 51px;
   background-color: rgb(22, 195, 152);
 }
-#header {
-  text-align: center;
-  background-color: rgb(20, 223, 172);
-
-  border-radius: 0 0 12% 12%;
-}
-#lh_ico {
-  display: inline-block;
-  width: 25%;
-  margin-top: 20%;
-  margin-bottom: 70px;
-}
 
 #choose_bar {
-  margin: 20% 60% 0 12%;
+  margin: 375px 60% 0 12%;
   border: 2px solid rgb(22, 195, 152);
   background-color: rgb(22, 195, 152);
   border-radius: 12px;

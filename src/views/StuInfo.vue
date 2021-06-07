@@ -6,11 +6,9 @@
             </div>
         </cube-popup>
 
-        <div id="header_bk"> </div>
-        <button id="back_btn" @click="onBack()">
-            <img id="back_ico" src="../assets/back.svg" alt="back">
-            <b id="back_text">返回</b>
-        </button>
+        <TopBanner></TopBanner>
+        <BackButton :toPage="'Home'"></BackButton>
+        <BottomBar :leftTo="'LogInfo'" :rightTo="'ChartInfo'"></BottomBar>
         <div id="stu_info_list">
             <div id="stu_info_bar">
                 学号： {{stuDetail.stuNum}} <br>
@@ -54,22 +52,23 @@
 </template>
 
 <script>
-import {getRecordApi} from '../api/lh.js'
+import {getRecordApi} from '../api/lh.js';
+import TopBanner from './component/TopBanner.vue';
+import BackButton from './component/BackButton.vue';
+import BottomBar from './component/BottomBar.vue';
 
 export default {
+    components: {
+        TopBanner,
+        BackButton,
+        BottomBar
+    },
     data() {
         return {
             stuDetail: this.$route.params.stuDetail
         }
     },
     methods: {
-        //返回事件
-        onBack() {
-            this.$router.push({
-                name: "Home"
-            })
-        },
-
         //展示popup
         showPopup(refId) {
             const component = this.$refs[refId]
@@ -116,7 +115,7 @@ export default {
 <style lang="scss">
 #stu_info_list {
     display: block;
-    margin: 0 7% 0 7%;
+    margin: 90px 7% 0 7%;
 }
 #stu_info_bar {
     background-color: white;
@@ -128,33 +127,6 @@ export default {
     line-height: 28px;
     font-size: 18px;
     color: rgb(87, 87, 87);
-}
-#info {
-    position: relative;
-    padding-top: 80px;
-}
-#back_btn {
-    display: block;
-    position: absolute;
-    left: 7%;
-    top: 25px;
-    padding: 5px 8px 5px 8px;
-    background-color: white;
-    outline: none;
-    border: none;
-    font-size: 14px;
-    line-height: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 5px rgba(177, 177, 177, 0.815);
-}
-#back_ico {
-    position: absolute;
-    top: 7px;
-    width: 15px;
-}
-#back_text {
-    margin-left: 15px;
-    color: rgb(124, 124, 124);
 }
 .copy_ico {
     margin-left: 6px;
@@ -196,16 +168,5 @@ export default {
     padding-top: 10px;
     font-size: 16px;
     color: rgb(22, 195, 152);
-}
-#header_bk {
-    top: 0;
-    position: absolute;
-    z-index: -1;
-    display: block;
-    height: 240px;
-    width: 100%;
-    background-color: rgb(20, 223, 172);
-
-    border-radius: 0 0 12% 12%;
 }
 </style>

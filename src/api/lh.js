@@ -41,3 +41,18 @@ export const getStuNumListApi = (stuName, userId) => request.get("/lh/get-stunum
         "orgin": "http://wusthelper.wustlinghang.cn"
     }
 });
+
+//获取日志信息
+export const getLogApi = (lvl, time, userId) => request.get("/lh/get-log-info", {
+    params: {
+        "lvl": lvl,
+        "time": time,
+        "userId": userId
+    },
+    headers: {
+        "Token": "",
+        "postman-token": "c1249a979f1d41ac98232cc3395dec5a",
+        "refrer": "https://wusthelper.wustlinghang.cn/",
+        "orgin": "http://wusthelper.wustlinghang.cn"
+    }
+});

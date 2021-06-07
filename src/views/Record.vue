@@ -1,12 +1,6 @@
 <template>
     <div id="record">
-        <div id="head_bar">
-            <button id="back_btn_t" @click="onBack(stuDetail)">
-                <img id="back_ico" src="../assets/back.svg" alt="back">
-                <b id="back_text">返回</b>
-            </button>
-            <b id="title_txt">操作记录</b>
-        </div>
+        <HeadBar :toPage="'StuInfo'" :toParam="{'stuDetail': stuDetail}" :title="'操作记录'"></HeadBar>
         <table id="rcd_tb">
             <ul v-for="(record, index) in records" :key="index" class="rcd_item">
                 <div class="rcd_date_txt">{{record.date}}</div>
@@ -35,11 +29,16 @@
 </template>
 
 <script>
+import HeadBar from './component/HeadBar.vue';
+
 export default {
+    components: {
+        HeadBar
+    },
     data() {
         return {
             stuDetail: this.$route.params.stuDetail,
-            records: this.$route.params.records
+            records: this.$route.params.records,
         }
     },
     methods: {
@@ -56,36 +55,22 @@ export default {
 </script>
 
 <style lang="scss">
-#head_bar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    background-color: rgb(255, 255, 255);
-    text-align: center;
-    box-shadow: 0 0 10px rgba(168, 168, 168, 0.815);
-}
 #back_btn_t {
     display: block;
     position: absolute;
     left: 7%;
-    top: 15px;
+    top: 45px;
     padding: 5px 8px 5px 8px;
     background-color: white;
     outline: none;
-    border: 1px solid rgb(224, 224, 224);
+    border: none;
     font-size: 14px;
     line-height: 20px;
     border-radius: 15px;
     //box-shadow: 0 0 5px rgba(177, 177, 177, 0.815);
 }
-#title_txt {
-    line-height: 60px;
-    font-size: 18px;
-    color: #686868;
-}
 #rcd_tb {
-    margin: 80px 5% 0 5%;
+    margin: 110px 5% 0 5%;
     width: 90%;
 }
 .rcd_item {
@@ -104,7 +89,7 @@ export default {
 .sig_rcd_tb {
     display: block;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(216, 216, 216, 0.815);
     padding: 15px 10px 15px 10px;

@@ -24,13 +24,14 @@ export default {
             logInfo: this.$route.params.logInfo,
             itemNum: this.$route.params.itemNum,
             lvl: this.$route.params.lvl,
-            day: this.$route.params.day
+            day: this.$route.params.day,
+            condition: this.$route.params.condition
         }
     },
     methods: {
         timeList() {
-            if (this.itemNum < 0) {
-                return this.logInfo.unknown[-this.itemNum].timeList;
+            if (this.condition == 'unknown') {
+                return this.logInfo.unknown[this.itemNum].timeList;
             } else {
                 return this.logInfo.simple[this.itemNum].timeList;
             }

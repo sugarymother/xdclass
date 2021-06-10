@@ -14,7 +14,7 @@
                     <div><b>触发次数：</b>{{item1.occurredTimes}}</div>
                     <div>
                         <b>最后触发时间：</b>
-                        {{item1.timeList[0]}} <div class="time_detail" v-if="item1.timeList.length > 1" @click="onTimeBtn(-indes)">详细时间</div>
+                        {{item1.timeList[0]}} <div class="time_detail" v-if="item1.timeList.length > 1" @click="onTimeBtn(indes, 'unknown')">详细时间</div>
                     </div>
                     <div class="unknown_log_stack_btn" @click="onStackBtn(indes)">查看堆栈</div>
                 </ul>
@@ -27,7 +27,7 @@
                     <div><b>触发次数：</b>{{item.occurredTimes}}</div>
                     <div>
                         <b>最后触发时间：</b>
-                        {{item.timeList[0]}} <div class="time_detail" v-if="item.timeList.length > 1" @click="onTimeBtn(index)">详细时间</div>
+                        {{item.timeList[0]}} <div class="time_detail" v-if="item.timeList.length > 1" @click="onTimeBtn(index, 'simple')">详细时间</div>
                     </div>
                 </ul>
             </table>
@@ -61,7 +61,7 @@ export default {
         this.onDayChange(this.day);
     },
     methods: {
-        onTimeBtn(itemNum) {
+        onTimeBtn(itemNum, condition) {
             this.$router.push({
                 name: "LogTimeDetail",
                 params: {
@@ -69,7 +69,8 @@ export default {
                     logInfo: this.logInfo,
                     itemNum: itemNum,
                     lvl: this.lvl,
-                    day: this.day
+                    day: this.day,
+                    condition: condition
                 }
             })
         },

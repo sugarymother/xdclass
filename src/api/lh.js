@@ -56,3 +56,17 @@ export const getLogApi = (lvl, time, userId) => request.get("/lh/get-log-info", 
         "orgin": "http://wusthelper.wustlinghang.cn"
     }
 });
+
+//获取时段请求信息
+export const getTimeReportApi = (time, userId) => request.get("/lh/get-time-report", {
+    params: {
+        "time": time,
+        "userId": userId
+    },
+    headers: {
+        "Token": "",
+        "postman-token": "c1249a979f1d41ac98232cc3395dec5a",
+        "refrer": "https://wusthelper.wustlinghang.cn/",
+        "orgin": "http://wusthelper.wustlinghang.cn"
+    }
+});

@@ -15,5 +15,15 @@ module.exports = {
       postCompile: true,
       theme: true
     }
+  },
+  pluginOptions: {
+    electronBuilder: {
+      builderOptions: {
+        appId: 'test.com',
+        win: {
+          icon: 'public/lhquery.ico'
+        }
+      }
+    }
   }
 }

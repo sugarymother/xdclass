@@ -70,3 +70,26 @@ export const getTimeReportApi = (time, userId) => request.get("/lh/get-time-repo
         "orgin": "http://wusthelper.wustlinghang.cn"
     }
 });
+
+//获取爬虫超时数值
+export const getCrawlerTimeoutApi = (userId) => request.get("/lh/get-crawler-timeout", {
+    params: {
+        "userId": userId
+    },
+    headers: {
+        "Token": "",
+        "postman-token": "c1249a979f1d41ac98232cc3395dec5a",
+        "refrer": "https://wusthelper.wustlinghang.cn/",
+        "orgin": "http://wusthelper.wustlinghang.cn"
+    }
+});
+
+//修改爬虫超时数值
+export const setCrawlerTimeoutApi = (params) => request.post("/lh/set-crawler-timeout", params, {
+    headers: {
+        "Token": "",
+        "postman-token": "c1249a979f1d41ac98232cc3395dec5a",
+        "refrer": "https://wusthelper.wustlinghang.cn/",
+        "orgin": "http://wusthelper.wustlinghang.cn"
+    }
+});

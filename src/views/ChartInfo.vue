@@ -1,6 +1,31 @@
 <template>
     <div>
+        <div id="setting_window_frame">
+            <div id="setting_window">
+                <div id="setting_close_btn" @click="settingClose()">×</div>
+                <div id="setting_title">修改爬虫超时时间</div>
+                <div class="inputer">
+                    建立连接超时时间
+                    <input type="number" :value="socketTimeout" id="socket_timeout_inputer">
+                    ms
+                </div>
+                <div class="inputer">
+                    数据传输超时时间
+                    <input type="number" :value="connectionTimeout" id="connection_timeout_inputer">
+                    ms
+                </div>
+                <div id="timeout_submit_btn" @click="onTimeoutSubmit()">修改</div>
+            </div>
+            <cube-popup type="update-suc-popup" :mask="false" ref="update-suc-popup">
+                <div id="setting_popup_msg">
+                    {{popupMsg}}
+                </div>
+            </cube-popup>
+        </div>
         <div id="chart_info">
+            <div id="timeout_setting_btn" @click="onSetting()">
+                <img :src="settingIco" alt="settings">
+            </div>
             <div id="day_chse_btn">
                 <b id="today_btn" @click="onDayChange('today')">今日</b>
                 <b id="yesterday_btn" @click="onDayChange('yesterday')">昨日</b>
@@ -17,7 +42,7 @@
 import TopBanner from './component/TopBanner.vue'
 import BottomBar from './component/BottomBar.vue'
 import * as echarts from 'echarts'
-import {getTimeReportApi} from '../api/lh.js'
+import {getTimeReportApi, getCrawlerTimeoutApi, setCrawlerTimeoutApi} from '../api/lh.js'
 
 export default {
     components: {
@@ -26,15 +51,68 @@ export default {
     },
     data() {
         return {
+            settingIco: require('../assets/setting.svg'),
             ico: require('../assets/chart.svg'),
             haveData: false,
-            day: 'today'
+            day: 'today',
+            socketTimeout: 0,
+            connectionTimeout: 0,
+            popupMsg: '修改成功'
         }
     },
     mounted() {
         this.changeChartDay(this.day);
+        this.initTimeout();
     },
     methods: {
+        //展示popup
+        showPopup(refId) {
+            const component = this.$refs[refId]
+            component.show()
+            setTimeout(() => {
+                component.hide()
+            }, 1000)
+        },
+        initTimeout() {
+            let date = new Date();
+            getCrawlerTimeoutApi(date.getHours()).then(
+                res => {
+                    if (res.data.code == 10000) {
+                        this.socketTimeout = res.data.data.socketTimeout;
+                        this.connectionTimeout = res.data.data.connectTimeout;
+                    } else {
+                        this.socketTimeout = 0;
+                        this.connectionTimeout = 0;
+                    }
+                }
+            )
+        },
+        onTimeoutSubmit() {
+            let date = new Date();
+            const params = new URLSearchParams();
+            params.append('connectionTimeout', document.getElementById('connection_timeout_inputer').value);
+            params.append('socketTimeout', document.getElementById('socket_timeout_inputer').value);
+            params.append('userId',  date.getHours());
+            setCrawlerTimeoutApi(params).then(
+                res => {
+                    if (res.data.code == 10000) {
+                        this.popupMsg = '修改成功';
+                        this.showPopup('update-suc-popup');
+                    } else {
+                        this.popupMsg = '修改失败';
+                        this.showPopup('update-suc-popup');
+                    }
+                }
+            )
+        },
+        settingClose() {
+            let settingBar = document.getElementById('setting_window_frame');
+            settingBar.classList.remove('up');
+        },
+        onSetting() {
+            let settingBar = document.getElementById('setting_window_frame');
+            settingBar.classList.add('up');
+        },
         changeChartDay(day) {
             let date = new Date();
             getTimeReportApi(day, date.getHours()).then(
@@ -149,5 +227,80 @@ export default {
         left: 50%;
         transform: translate(-50%, -50%);
         color: rgb(161, 161, 161);
+    }
+    #timeout_setting_btn img {
+        height: 23px;
+    }
+    #timeout_setting_btn {
+        position: absolute;
+        top: 47px;
+        left: 25px;
+    }
+    #setting_window_frame {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(77, 77, 77, 0.377);
+        z-index: -1;
+        visibility: hidden;
+    }
+    #setting_window_frame.up {
+        z-index: 12;
+        visibility: visible;
+    }
+    #setting_window {
+        position: absolute;
+        background: white;
+        left: 50%;
+        top: 50%;
+        width: 80%;
+        transform: translate(-50%, -50%);
+        height: 240px;
+        padding: 10px;
+        border-radius: 5px;
+        color: rgb(51, 56, 56);
+    }
+    #setting_close_btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 25px;
+        color: rgb(93, 98, 102);
+    }
+    #setting_title {
+        margin-top: 15px;
+        font-size: 18px;
+        margin-bottom: 50px;
+        letter-spacing: 2px;
+    }
+    #socket_timeout_inputer, #connection_timeout_inputer {
+        display: inline-block;
+        width: 70px;
+        outline: none;
+        font-size: 14px;
+        background: rgba(225, 236, 236, 0.637);
+        margin-left: 6px;
+        padding: 3px;
+        color: rgb(58, 135, 139);
+    }
+    #setting_window div.inputer {
+        margin-bottom: 20px;
+        margin-top: 20px;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
+    #timeout_submit_btn {
+        margin-top: 45px;
+        font-size: 18px;
+        letter-spacing: 5px;
+        color: rgb(113, 187, 162);
+    }
+    #setting_popup_msg {
+        background-color: rgba(56, 56, 56, 0.431);
+        border-radius: 20px;
+        padding: 10px 30px 10px 30px;
+        color:rgba(255, 255, 255, 0.966);
     }
 </style>
